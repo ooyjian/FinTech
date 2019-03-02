@@ -2,7 +2,8 @@ import pandas
 import pandas_datareader.data as web
 import datetime as dt
 
-def hist_stock(comp_name, start_date=dt.datetime(2015,1,1), end_date=dt.datetime(2019,3,1), span=30):
+def hist_stock(comp_name, start_date=dt.datetime(2015,1,1),
+               end_date=dt.datetime.today(), span=30):
     """
     This function returns the stock price data for a certain company for a given
     time span
@@ -22,4 +23,4 @@ def hist_stock(comp_name, start_date=dt.datetime(2015,1,1), end_date=dt.datetime
         close_price.append(i)
     return close_price
 
-print(hist_stock('GOOG'))
+print(hist_stock('goog'))
