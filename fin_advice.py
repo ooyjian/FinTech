@@ -51,8 +51,8 @@ def fin_advice(input_data, comp_name):
     if zscore == False:
         return None
     if zscore[-1] > 1:
-        return "You should sell" + "Z-Score: " + str(zscore)
+        return "You should sell " + comp_name + "'s stocks. Z-Score: " + str(zscore)
     elif zscore[-1] < -1:
-        return "You should buy" + "Z-Score: " + str(zscore)
+        return "You should buy " + comp_name + "'s Z-Score: " + str(zscore)
     else:
-        return "You should keep" + "Z-Score: " + str(zscore)
+        return "You should keep " + comp_name + "'s stocks. Z-Score: " + str(zscore)
