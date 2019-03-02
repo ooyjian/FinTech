@@ -16,6 +16,7 @@ def compute_increase_rate(input_data):
             rates[comp].append((stock_prices[i] - stock_prices[i+1])/stock_prices[i+1])
     return rates
 
+print(compute_increase_rate({'lmao':(3.5, [1,2,3,4,5])}))
 
 def compute_zscore(input_data, comp_name):
     """
@@ -50,8 +51,8 @@ def fin_advice(input_data, comp_name):
     if zscore == False:
         return None
     if zscore[-1] > 1:
-        return "You should sell"
+        return "You should sell" + "Z-Score: " + str(zscore)
     elif zscore[-1] < -1:
-        return "You should buy"
+        return "You should buy" + "Z-Score: " + str(zscore)
     else:
-        return "You should keep"
+        return "You should keep" + "Z-Score: " + str(zscore)
