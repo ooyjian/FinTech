@@ -97,7 +97,7 @@ def highest_rise(rise_company):
     max = 0
     max_company = None
     for company, percentage in rise_company.items():
-        if percentage > max:
+        if percentage[0] > max:
             max = percentage
             max_company = company
     return (max_company, max)
@@ -108,10 +108,10 @@ def highest_fall(fall_company):
     :param rise_company: dictionary result from return_fall
     :return: the highest fall company
     """
-    min = 0
+    min = (0,0)
     min_company = None
     for company, percentage in fall_company.items():
-        if percentage < min:
+        if percentage[0] < min[0]:
             min = percentage
             min_company = company
     return (min_company, min)
