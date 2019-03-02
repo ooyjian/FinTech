@@ -1,4 +1,5 @@
 import time
+import _thread
 
 def time_func(interval):
     """
@@ -17,3 +18,17 @@ def time_func(interval):
     while True:
         time.sleep(interval)
         print("Hello World!")
+
+
+# # This part tests 多线程
+# def my_name():
+#     while True:
+#         time.sleep(7)
+#         print("欧宇健")
+#
+#
+# _thread.start_new_thread(time_func, (('3', 'SECONDS'),))
+# _thread.start_new_thread(my_name, ())
+#
+# # Press enter to exit
+# input("")
