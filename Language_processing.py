@@ -17,20 +17,15 @@ st = StanfordNERTagger('/Users/alex/PycharmProjects/HackRice/stanford-ner/classi
 
 
 text = "I'm interested in Apple, Amazon, Google"
-test_text = 'I want to brief every 12 hours'
-
-sents = sent_tokenize(text)
-
-words = word_tokenize(test_text)
-postag_list = nltk.pos_tag(words)
-#print (nltk.pos_tag(words))
+test_text = "I'm interested in apple"
 
 
 
+def get_postag(text):
+    words = word_tokenize(text)
+    postag_list = nltk.pos_tag(words)
 
-
-
-
+    return postag_list
 
 def has_interval(postag_list):
     """
@@ -49,8 +44,6 @@ def has_interval(postag_list):
                 return True
 
     return False
-
-print(has_interval(postag_list))
 
 def get_companies(text):
     """
@@ -89,8 +82,7 @@ def brief_now(text):
     stemmer = SnowballStemmer("english")
 
     original_text = text
-    words = word_tokenize(original_text)
-    postag_list = nltk.pos_tag(words)
+    postag_list = get_postag(original_text)
 
     if has_interval(postag_list):
         return False
@@ -126,8 +118,7 @@ def set_interval(text):
     frequency_indicators = ['HOUR', 'HOURS', 'MINUTE', 'MINUTES', 'SECOND', 'SECONDS', 'DAY', 'DAYS', 'WEEK', 'WEEKS',
                             'MONTH', 'MONTHS']
     original_text = text
-    words = word_tokenize(original_text)
-    postag_list = nltk.pos_tag(words)
+    postag_list = get_postag(original_text)
     for i in range(len(postag_list)-1):
         if postag_list[i][1] == 'CD':
             return (postag_list[i][0],(postag_list[i+1][0]).upper())
@@ -176,18 +167,18 @@ def determine_which_function(text):
     :return: a tuple, where first element is a integer 0:noting matched, 1:setting up company list, 2:setting up interval, 3:brief now.
     """
     original_text = text
-    words = word_tokenize(original_text)
-    postag_list = nltk.pos_tag(words)
+    postag_list = get_postag(original_text)
 
-    if has_interval(postag_list):
-        return (2, list(set_interval(text)))
-    elif if_set_company_list(text):
-        return (1, alter_companies_caps(get_companies(text)))
-    elif brief_now(text):
+    if brief_now(text):
         if len(get_companies(text)) != 0:
             return (3, alter_companies_caps(get_companies(text)))
         else:
             return (3, None)
+    if has_interval(postag_list):
+        return (2, list(set_interval(text)))
+    if if_set_company_list(text):
+        return (1, alter_companies_caps(get_companies(text)))
+
 
 
     else:
