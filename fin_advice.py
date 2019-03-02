@@ -16,14 +16,12 @@ def compute_increase_rate(input_data):
             rates[comp].append((stock_prices[i] - stock_prices[i+1])/stock_prices[i+1])
     return rates
 
-print(compute_increase_rate({'lmao':(3.5, [1,2,3,4,5])}))
-
 def compute_zscore(input_data, comp_name):
     """
     Compute the z-score for a group of data
     :param input_data: the rate the stock prices increase for every day
            comp_name: the name of the company
-    :return: the zscore for the data
+    :return: the newest zscore for the data
     """
     try:
         input_data = np.array(input_data[comp_name])
@@ -36,23 +34,55 @@ def compute_zscore(input_data, comp_name):
     for i in range(len(input_data)):
         daily_zscore = (input_data[i] - np.mean(input_data))/np.std(input_data)
         zscore.append(daily_zscore)
-    return zscore
+    return zscore[0]
 
-def fin_advice(input_data, comp_name):
+# print(compute_zscore(compute_increase_rate({'lmao':(3.5, [100,2,3,4,5])}), 'lmao'))
+
+def rev_dict(input_dict):
+    """
+    Helper function which makes the values of the dict become the key
+    :param input_dict: the input dictionary. Each key only has one corresponding
+    :return: a dictionary where the keys are the original dictionary's values, and the
+             keys are all positive
+    """
+    return_dict = {}
+    for i, j in input_dict.items():
+        return_dict[abs(j)] = i
+    return return_dict
+
+def fin_advice(input_data, num_advice=3):
     """
     This return the advice that whether we should keep the stock, sell it, or buy it
     :param input_data: Alex's style of data for the company
-           comp_name: the name of the company
-    :return: What should the user do to their stock
+           num_advice: the number of advice given, with default being 3
+    :return: a list of strings which contains the advice
     """
+    # Initialize the advice list
+    advice = []
     # Compute the Z-score for a certain company
     inc_rate = compute_increase_rate(input_data)
-    zscore = compute_zscore(inc_rate, comp_name)
-    if zscore == False:
-        return None
-    if zscore[-1] > 1:
-        return "You should sell " + comp_name + "'s stocks. Z-Score: " + str(zscore)
-    elif zscore[-1] < -1:
-        return "You should buy " + comp_name + "'s Z-Score: " + str(zscore)
-    else:
-        return "You should keep " + comp_name + "'s stocks. Z-Score: " + str(zscore)
+    print(inc_rate)
+    zscore = {}
+    # Map each Z-Score to each company
+    for comp_name in input_data.keys():
+        print(compute_zscore(inc_rate, comp_name))
+        zscore[comp_name] = compute_zscore(inc_rate, comp_name)
+    # Reverse the dictionary z-score. (This help to find the max z-score)
+    rev_zscore = rev_dict(zscore)
+    for i in range(num_advice):
+        if len(rev_zscore) == 0:
+            break
+        # Find and delete the company with the greatest absolute z-score
+        use_zscore = max(rev_zscore.keys())
+        use_comp = rev_zscore[use_zscore]
+        del rev_zscore[use_zscore]
+        # Determine the advice given for that certain company
+        print(zscore[use_comp])
+        print(use_comp)
+        if zscore[use_comp] > 1:
+            advice.append(use_comp + " Sell")
+        elif zscore[use_comp] < -1:
+            advice.append(use_comp + " Buy")
+        else:
+            advice.append(use_comp + " Keep")
+    return advice
