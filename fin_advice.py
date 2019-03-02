@@ -61,11 +61,9 @@ def fin_advice(input_data, num_advice=3):
     advice = []
     # Compute the Z-score for a certain company
     inc_rate = compute_increase_rate(input_data)
-    print(inc_rate)
     zscore = {}
     # Map each Z-Score to each company
     for comp_name in input_data.keys():
-        print(compute_zscore(inc_rate, comp_name))
         zscore[comp_name] = compute_zscore(inc_rate, comp_name)
     # Reverse the dictionary z-score. (This help to find the max z-score)
     rev_zscore = rev_dict(zscore)
@@ -77,8 +75,6 @@ def fin_advice(input_data, num_advice=3):
         use_comp = rev_zscore[use_zscore]
         del rev_zscore[use_zscore]
         # Determine the advice given for that certain company
-        print(zscore[use_comp])
-        print(use_comp)
         if zscore[use_comp] > 1:
             advice.append("Sell " + use_comp + " Stock")
         elif zscore[use_comp] < -1:
