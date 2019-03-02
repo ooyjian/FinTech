@@ -80,9 +80,9 @@ def fin_advice(input_data, num_advice=3):
         print(zscore[use_comp])
         print(use_comp)
         if zscore[use_comp] > 1:
-            advice.append(use_comp + " Sell")
+            advice.append("Sell " + use_comp + " Stock")
         elif zscore[use_comp] < -1:
-            advice.append(use_comp + " Buy")
+            advice.append("Buy " + use_comp + " Stock")
         else:
-            advice.append(use_comp + " Keep")
+            advice.append("Keep " + use_comp + " Stock")
     return advice
