@@ -22,3 +22,4 @@ def hist_stock(comp_name, start_date=dt.datetime(2015,1,1),
     for i in df['Close']:
         close_price.append(i)
     return close_price
+
